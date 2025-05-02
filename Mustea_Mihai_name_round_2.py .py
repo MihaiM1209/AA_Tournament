@@ -42,19 +42,11 @@ def strategy_round_2(opponent_id: int, my_history: dict[int, list[int]], opponen
         move = 1
     elif round_num == 5:
         if all(m == 0 for m in opp_moves[:5]):
-            mode = 'full_defect'
+            move = 0
         elif all(m == 1 for m in opp_moves[:5]):
-            mode = 'exploit'
+            move = 1
         else:
-            mode = 'mixed'
-        strategy_round_2.modes[opponent_id] = mode
-
-    mode = strategy_round_2.modes.get(opponent_id, 'mixed')
-
-    if mode == 'full_defect':
-        move = 0
-    elif mode == 'exploit':
-        move = 0 if round_num % 5 == 0 else 1
+            move = 1
     else:
         if opp_moves and opp_moves[-1] == 0:
             move = 1
@@ -68,6 +60,3 @@ def strategy_round_2(opponent_id: int, my_history: dict[int, list[int]], opponen
 
     next_opponent = choose_opponent()
     return (move, next_opponent)
-
-if not hasattr(strategy_round_2, 'modes'):
-    strategy_round_2.modes = {}
